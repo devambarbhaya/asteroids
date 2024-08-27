@@ -51,6 +51,16 @@ class Player(CircleShape):
       
     self.position += self.velocity * dt
     
+    if self.position.x < 0:
+      self.position.x = SCREEN_WIDTH
+    elif self.position.x > SCREEN_WIDTH:
+      self.position.x = 0
+        
+    if self.position.y < 0:
+      self.position.y = SCREEN_HEIGHT
+    elif self.position.y > SCREEN_HEIGHT:
+      self.position.y = 0
+    
   def apply_acceleration(self, dt):
     forward = pygame.Vector2(0, 1).rotate(self.rotation)
     self.velocity += forward * self.acceleration * dt
