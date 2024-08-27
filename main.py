@@ -25,40 +25,44 @@ def main():
   
   player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
   
+  score = 0
   running = True
   while running:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         running = False
 
-    # Update objects
     for obj in updatable:
       obj.update(dt)
 
-    # Handle bullet-asteroid collisions
     for asteroid in asteroids:
       for shot in shots:
         if asteroid.collision(shot):
-          asteroid.split()  # Replace kill with split
+          asteroid.split()
           shot.kill()
+          if asteroid.radius > ASTEROID_MIN_RADIUS * 2:
+            score += 30
+          elif asteroid.radius > ASTEROID_MIN_RADIUS:
+            score += 20
+          else:
+            score += 10
 
-    # Clear screen
     screen.fill("black")
 
-    # Draw objects
     for obj in drawable:
       obj.draw(screen)
+      
+    font = pygame.font.Font(None, 36)
+    score_text = font.render(f"Score: {score}", True, pygame.Color("white"))
+    screen.blit(score_text, (10, 10))
 
-    # Flip the display
     pygame.display.flip()
 
-    # Check for player-asteroid collisions
     for obj in asteroids:
       if player.collision(obj):
         print("Game over!")
         running = False
 
-      # Cap the frame rate
     dt = clock.tick(60) / 1000
   
   pygame.quit()
