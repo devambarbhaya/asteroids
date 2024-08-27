@@ -33,13 +33,13 @@ def main():
 
     # Update objects
     for obj in updatable:
-        obj.update(dt)
+      obj.update(dt)
 
     # Handle bullet-asteroid collisions
     for asteroid in asteroids:
       for shot in shots:
         if asteroid.collision(shot):
-          asteroid.kill()
+          asteroid.split()  # Replace kill with split
           shot.kill()
 
     # Clear screen
@@ -58,12 +58,10 @@ def main():
         print("Game over!")
         running = False
 
-    # Cap the frame rate
+      # Cap the frame rate
     dt = clock.tick(60) / 1000
   
   pygame.quit()
     
 if __name__ == "__main__":
     main()
-
-
