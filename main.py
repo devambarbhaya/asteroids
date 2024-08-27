@@ -26,6 +26,9 @@ def main():
   player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
   
   score = 0
+  lives = 3
+  respawn_timer = 0
+  
   running = True
   while running:
     for event in pygame.event.get():
@@ -46,6 +49,20 @@ def main():
             score += 20
           else:
             score += 10
+            
+    if respawn_timer <= 0:
+      for obj in asteroids:
+        if player.collision(obj):
+          lives -= 1
+          if lives > 0:
+            respawn_timer = 3
+            player.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+          else:
+            print("Game over!")
+            running = False
+            
+    if respawn_timer > 0:
+      respawn_timer -= 1
 
     screen.fill("black")
 
@@ -55,6 +72,9 @@ def main():
     font = pygame.font.Font(None, 36)
     score_text = font.render(f"Score: {score}", True, pygame.Color("white"))
     screen.blit(score_text, (10, 10))
+    
+    lives_text = font.render(f"Lives: {lives}", True, pygame.Color("white"))
+    screen.blit(lives_text, (10, 50))
 
     pygame.display.flip()
 

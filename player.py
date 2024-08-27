@@ -8,6 +8,7 @@ class Player(CircleShape):
     self.position = pygame.Vector2(x, y)
     self.rotation = 0
     self.shoot_timer = 0
+    self.invulnerable = False
     
   def triangle(self):
     forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -18,7 +19,8 @@ class Player(CircleShape):
     return [a, b, c]
   
   def draw(self, screen):
-    pygame.draw.polygon(screen, "#FFFFFF", self.triangle(), 2)
+    color = "#FFFFFF" if not self.invulnerable else "#FFFF00"
+    pygame.draw.polygon(screen, color, self.triangle(), 2)
     
   def rotate(self, dt):
     self.rotation += PLAYER_TURN_SPEED * dt
