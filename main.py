@@ -31,24 +31,39 @@ def main():
       if event.type == pygame.QUIT:
         running = False
 
+    # Update objects
     for obj in updatable:
         obj.update(dt)
-      
+
+    # Handle bullet-asteroid collisions
+    for asteroid in asteroids:
+      for shot in shots:
+        if asteroid.collision(shot):
+          asteroid.kill()
+          shot.kill()
+
+    # Clear screen
     screen.fill("black")
 
+    # Draw objects
     for obj in drawable:
-        obj.draw(screen)
-      
+      obj.draw(screen)
+
+    # Flip the display
     pygame.display.flip()
-      
+
+    # Check for player-asteroid collisions
     for obj in asteroids:
       if player.collision(obj):
         print("Game over!")
         running = False
-      
+
+    # Cap the frame rate
     dt = clock.tick(60) / 1000
   
   pygame.quit()
     
 if __name__ == "__main__":
     main()
+
+
